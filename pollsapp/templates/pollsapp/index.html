@@ -1,0 +1,44 @@
+<!--    Questo file sarà utilizzato come template per la visualizzazione
+        della pagina di indice dell'applicazione di sondaggi. 
+
+utilizzo i template tags di Django, che consistono in del codice incapsulato
+tra parentesi graffe e percentuali, per inserire logica Python all'interno del
+template. uso if e for per controllare la presenza di dati e iterare su di essi
+
+all'interno del ciclo for utilizzo le variabili di contesto per accedere
+ai dati dinamici, come il testo della domanda (question.question_text) e l'ID
+della domanda (question.id). questi dati vengono poi incorporati nel markup HTML
+per visualizzare le domande elencate sulla pagina.
+
+-------------------------------------------------------------------------------
+
+La funzione get_template del modulo di caricamento (loader) di Django integra
+dei file template HTML all'interno delle viste.
+Questo metodo permette di caricare index.html consentendo così di combinare
+dinamicamente la logica della vista con la struttura del template. -->
+
+<!--Anzichè passare direttamente l'url a href posso passargli 'detail' così mi
+	assicuro che il sito funzioni anche se in futuro modifico il percorso.
+	assegnado pollsapp: a detail mi assicuro che anche se aggiungo altre app
+	non incomberò in conflitti-->
+
+{% load static %}
+<link
+  rel="stylesheet"
+  type="text/css"
+  href="{% static 'pollsapp/style.css' %}"
+/>
+
+{% if latest_question_list %}
+<ul>
+  {% for question in latest_question_list %}
+  <li>
+    <a href="{% url 'pollsapp:detail' question.id %}"
+      >{{ question.question_text }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>Nessun sondaggio disponibile</p>
+{% endif %}
